@@ -13,11 +13,11 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-#font pango:Ubuntu mono 12
+font pango:monospace 8
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:DejaVu Sans Mono 12
+#font pango:DejaVu Sans Mono 8
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
@@ -35,21 +35,11 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 
 # Use pactl to adjust volume in PulseAudio.
-#set $refresh_i3status killall -SIGUSR1 i3status
-#bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-#bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-#bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-#bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-
-set $refresh_volume pkill -RTMIN+10 i3blocks
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_volume
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_volume
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_volume
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_volume
-
-# all microphones on/off
-#bindsym $mod+Shift+m exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && pkill -RTMIN+12 i3blocks
-bindsym $mod+Shift+m exec --no-startup-id bash -c 'pactl list sources short | awk "{print \$2}" | xargs -I{} pactl set-source-mute {} toggle && pkill -RTMIN+12 i3blocks'
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -60,22 +50,19 @@ bindsym $mod+Return exec i3-sensible-terminal
 # kill focused window
 bindsym $mod+q kill
 
-# start dmenu (a default program launcher)
-# bindsym $mod+d exec --no-startup-id dmenu_run
+# start dmenu (a program launcher)
+bindsym $mod+d exec --no-startup-id dmenu_run
 # A more modern dmenu replacement is rofi:
 # bindcode $mod+40 exec "rofi -modi drun,run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
 # bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
 
-# use rofi program launcher
-bindsym $mod+d exec --no-startup-id rofi -show drun
-
 # change focus
 bindsym $mod+j focus left
 bindsym $mod+k focus down
 bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+bindsym $mod+ccaron focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -87,7 +74,7 @@ bindsym $mod+Right focus right
 bindsym $mod+Shift+j move left
 bindsym $mod+Shift+k move down
 bindsym $mod+Shift+l move up
-bindsym $mod+Shift+semicolon move right
+bindsym $mod+Shift+ccaron move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -110,35 +97,16 @@ bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
+bindsym $mod+Shift+t floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+bindsym $mod+t focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
-
-# detect different monitors and automatically change configs
-exec --no-startup-id autorandr --change
-
-# associate workspaces to specific monitors
-set $laptop-monitor eDP-1
-set $main-monitor HDMI-1
-workspace $ws1 output $laptop-monitor
-workspace $ws2 output $main-monitor
-workspace $ws3 output $main-monitor
-workspace $ws4 output $laptop-monitor
-workspace $ws5 output $laptop-monitor
-workspace $ws6 output $laptop-monitor
-workspace $ws7 output $laptop-monitor
-workspace $ws8 output $laptop-monitor
-workspace $ws9 output $laptop-monitor
-
-# move workspace to another monitor
-bindsym $mod+o move workspace to output right
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -195,7 +163,7 @@ mode "resize" {
         bindsym j resize shrink width 10 px or 10 ppt
         bindsym k resize grow height 10 px or 10 ppt
         bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+        bindsym ccaron resize grow width 10 px or 10 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
@@ -214,52 +182,11 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3blocks
-        position top
+        status_command i3status
 }
 
-exec --no-startup-id picom
-
-# switch between keyboard layouts
-exec_always --no-startup-id setxkbmap -layout us,hr -option grp:alt_shift_toggle 
-
-# remove title bar
-for_window [class="^.*"] border pixel 0
-new_window 1pixel
-
-# wallpaper
-exec_always nitrogen --restore
-
-# brightness
-bindsym XF86Search exec --no-startup-id sudo brightnessctl set 10%- && pkill -RTMIN+13 i3blocks
-bindsym XF86Back exec --no-startup-id sudo brightnessctl set 10%+ && pkill -RTMIN+13 i3blocks
+# keyboard layout
+exec setxkbmap -layout us,hr
+exec setxkbmap -option grp:alt_shift_toggle
 
 
-# assign common apps to workspaces
-assign [class="Microsoft-edge"] $ws2
-assign [class="jetbrains-idea"] $ws3
-assign [class="Slack"] $ws1
-assign [class="obsidian"] $ws4
-assign [class="KeePassXC"] $ws9
-
-# screenshots
-bindsym $mod+p exec --no-startup-id flameshot gui
-
-# launch polybar
-#exec_always ~/.config/polybar/launch.sh &
-
-# notifications
-exec --no-startup-id dunst -config ~/.config/dunst/dunstrc 
-# toggle notifications on/off
-#bindsym $mod+Shift+n exec --no-startup-id dunstctl set-paused toggle
-bindsym $mod+Shift+n exec --no-startup-id dunstctl set-paused toggle && pkill -RTMIN+11 i3blocks
-
-
-# lock 
-bindsym $mod+Delete exec betterlockscreen -l blur
-
-# Start xautolock to automatically lock the screen after 15 minutes of inactivity
-exec --no-startup-id xautolock -time 15 -locker "betterlockscreen -l blur" -detectsleep
-
-# needed for custom key bindings, such as the alt+Shift_L to toggle the keyboard layout
-exec --no-startup-id xbindkeys

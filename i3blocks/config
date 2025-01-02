@@ -33,11 +33,20 @@ command=~/.config/i3blocks/volume.sh
 interval=once
 signal=10
 
+[brightness]
+command=~/.config/i3blocks/brightness.sh
+interval=once
+signal=13
+
+[microphone]
+command=~/.config/i3blocks/microphone.sh
+interval=once
+signal=12
+
 [notifications]
 command=~/.config/i3blocks/notifications.sh
 interval=once
 signal=11
-
 
 [wifi]
 command=~/.config/i3blocks/wifi.sh
@@ -87,7 +96,10 @@ interval=10
 command=date '+%a, %d-%m 🕒 %H:%M'
 interval=20
 
-
+[keyboard_layout]
+command=~/.config/i3blocks/keyboard_layout.sh
+interval=once
+signal=14
 
 # Generic media player support
 #

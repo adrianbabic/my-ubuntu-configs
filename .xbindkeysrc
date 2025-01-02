@@ -1,0 +1,4 @@
+# Trigger i3blocks signal on Alt+Shift
+"pkill -RTMIN+14 i3blocks"
+  Alt+Shift_L
+
